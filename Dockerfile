@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.0-base
+FROM nvidia/cuda:11.0-base-ubuntu18.04
 # FROM directive resets ARGS, so we specify again (the value is retained if
 # previously set).
 ARG CUDA=11.0
@@ -32,4 +32,4 @@ RUN conda env create -f RoseTTAFold-linux.yml \
     && conda env create -f folding-linux.yml
  
 # Weights
-# TODO pyrosetta
+# TODO pyrosetta (LTS 18.04 and python3.7)
