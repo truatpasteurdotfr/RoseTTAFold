@@ -1,7 +1,10 @@
-FROM nvidia/cuda:11.0-base-ubuntu18.04
+ARG CUDA=11.2
+ARG CUDA_M=2
+FROM nvidia/cuda:${CUDA}.${CUDA_M}-cudnn8-runtime-ubuntu18.04
 # FROM directive resets ARGS, so we specify again (the value is retained if
 # previously set).
-ARG CUDA=11.0
+ARG CUDA
+ARG CUDA_M
  
 # Use bash to support string substitution.
 SHELL ["/bin/bash", "-c"]
@@ -31,5 +34,15 @@ ENV PATH="/opt/miniconda3/bin:$PATH"
 RUN conda env create -f RoseTTAFold-linux.yml \
     && conda env create -f folding-linux.yml
  
-# Weights
+# Compile HHsuite from source.
+RUN git clone --branch v3.3.0 https://github.com/soedinglab/hh-suite.git /tmp/hh-suite \
+    && mkdir /tmp/hh-suite/build \
+    && pushd /tmp/hh-suite/build \
+    && cmake -DHAVE_SSE4_1=1 -DCMAKE_INSTALL_PREFIX=/opt/hhsuite .. \
+    && make -j 4 && make install \
+    && ln -s /opt/hhsuite/bin/* /usr/bin \
+    && popd \
+    && rm -rf /tmp/hh-suite
+
 # TODO pyrosetta (LTS 18.04 and python3.7)
+#  (will be done in the onsite singularity conversion because license)
