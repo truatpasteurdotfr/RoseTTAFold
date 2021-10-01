@@ -35,6 +35,7 @@ RUN conda env create -f RoseTTAFold-linux.yml \
     && conda env create -f folding-linux.yml
  
 # Compile HHsuite from source.
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y install git
 RUN git clone --branch v3.3.0 https://github.com/soedinglab/hh-suite.git /tmp/hh-suite \
     && mkdir /tmp/hh-suite/build \
     && pushd /tmp/hh-suite/build \
