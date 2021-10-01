@@ -12,8 +12,10 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && \
 DEBIAN_FRONTEND=noninteractive apt-get upgrade -y  && \
 DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      build-essential \
+      cmake git \
       cuda-command-line-tools-${CUDA/./-} \
-      curl bzip2 wget unzip\
+      curl bzip2 wget unzip \
     && rm -rf /var/lib/apt/lists/*
  
 # Install Miniconda package manger.
@@ -35,7 +37,6 @@ RUN conda env create -f RoseTTAFold-linux.yml \
     && conda env create -f folding-linux.yml
  
 # Compile HHsuite from source.
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y install git
 RUN git clone --branch v3.3.0 https://github.com/soedinglab/hh-suite.git /tmp/hh-suite \
     && mkdir /tmp/hh-suite/build \
     && pushd /tmp/hh-suite/build \
