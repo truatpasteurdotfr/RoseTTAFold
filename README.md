@@ -25,6 +25,8 @@ conda env create -f folding-linux.yml
 3. Download network weights (under Rosetta-DL Software license -- please see below)  
 While the code is licensed under the MIT License, the trained weights and data for RoseTTAFold are made available for non-commercial use only under the terms of the Rosetta-DL Software license. You can find details at https://files.ipd.uw.edu/pub/RoseTTAFold/Rosetta-DL_LICENSE.txt
 
+[Update Nov/02/2021] It's now including the weights (RF2t.pt) for RoseTTAFold-2track model used for yeast PPI screening. If you want to use it, please re-download weights. The original RoseTTAFold weights are not changed.
+
 ```
 wget https://files.ipd.uw.edu/pub/RoseTTAFold/weights.tar.gz
 tar xfz weights.tar.gz
@@ -65,6 +67,10 @@ cd example
 # For complex modeling
 # please see README file under example/complex_modeling/README for details.
 python network/predict_complex.py -i paired.a3m -o complex -Ls 218 310 
+
+# For PPI screening using faster 2-track version (example input and output are at example/complex_2track)
+python network_2track/predict_msa.py -msa [paired MSA file in a3m format] -npz [output npz file name] -L1 [Length of first chain]
+e.g. python network_2track/predict_msa.py -msa input.a3m -npz complex.npz -L1 218
 ```
 
 ## Expected outputs
@@ -90,5 +96,6 @@ The codes in network/equivariant_attention is from the original SE(3)-Transforme
 
 ## References
 
-M Baek, et al., Accurate prediction of protein structures and interactions using a 3-track network, bioRxiv (2021). [link](https://www.biorxiv.org/content/10.1101/2021.06.14.448402v1)
+M. Baek, et al., Accurate prediction of protein structures and interactions using a three-track neural network, Science (2021). [link](https://www.science.org/doi/10.1126/science.abj8754)
 
+I.R. Humphreys, J. Pei, M. Baek, A. Krishnakumar, et al, Computed structures of core eukaryotic protein complexes, Science (2021). [link](https://www.science.org/doi/10.1126/science.abm4805)
